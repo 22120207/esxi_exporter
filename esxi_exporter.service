@@ -1,0 +1,11 @@
+[Unit]
+Description=Smartctl Exporter
+After=network.target
+
+[Service]
+User=root
+ExecStart=/usr/local/bin/esxi_exporter
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
