@@ -225,8 +225,6 @@ func (m *Metrics) discoverEsxcliDevices() []map[string]string {
 						"model":        model,
 						"protocol":     protocol,
 					})
-				} else {
-					log.Printf("Skipping incomplete device info: %v", currentDeviceInfo)
 				}
 			}
 			currentDeviceInfo = map[string]string{"id": line}
@@ -270,8 +268,6 @@ func (m *Metrics) discoverEsxcliDevices() []map[string]string {
 				"model":        model,
 				"protocol":     protocol,
 			})
-		} else {
-			log.Printf("Skipping incomplete last device info: %v", currentDeviceInfo)
 		}
 	}
 
@@ -385,7 +381,6 @@ func (m *Metrics) CollectMetrics() {
 			if protocol == "" {
 				protocol = "Unknown"
 			}
-			log.Printf("Processing esxcli device: %s (%s)", displayName, deviceID)
 			m.metrics["smartctl_drive"].With(prometheus.Labels{
 				"host":       m.host,
 				"drive":      displayName,
@@ -552,7 +547,6 @@ func (m *Metrics) createMetricsOfPhysicalDrive(physicalDrive map[string]interfac
 
 // getPerccliSmart retrieves SMART data for a drive
 func (m *Metrics) getPerccliSmart(drivePath string) string {
-	// cd /opt/lsi/perccli && ./perccli /c0/e32/s2 show smart
 	cmd := "cd /opt/lsi/perccli && ./perccli " + drivePath + " show smart"
 	output, err := m.runCmd(cmd)
 	if err != nil {
@@ -571,7 +565,6 @@ func (m *Metrics) getPerccliSmart(drivePath string) string {
 
 // runCmd executes a shell command with a timeout
 func (m *Metrics) runCmd(command string) (string, error) {
-	log.Printf("Executing command: %s", command)
 	cmd := exec.Command("bash", "-c", command)
 	var output strings.Builder
 	cmd.Stdout = &output
