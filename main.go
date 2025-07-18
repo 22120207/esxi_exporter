@@ -32,7 +32,7 @@ func main() {
 	// Set up the /metrics endpoint
 	http.Handle("/metrics", promhttp.Handler())
 	log.Printf("Starting server on port %s", port)
-	if err := http.ListenAndServe(":"+port, nil); err != nil {
+	if err := http.ListenAndServe("0.0.0.0:"+port, nil); err != nil {
 		log.Fatalf("Failed to start server: %v", err)
 	}
 }
